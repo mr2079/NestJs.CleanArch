@@ -14,20 +14,32 @@ export class UserRepository implements IUserRepository {
 
   async findAll(): Promise<UserDto[]> {
     const users = await this.userRepository.find();
-    return users.map(user => this.toUserDto(user));
+    return users.map((user) => this.toUserDto(user));
   }
   async findOne(id: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ id: id });
     return this.toUserDto(user);
   }
-  insert(user: UserDto): Promise<void> {
-    throw new Error('Method not implemented.');
+  async insert(user: User): Promise<void> {
+    try {
+      await this.userRepository.insert(user);
+    } catch {
+      throw new Error;
+    }
   }
-  update(user: UserDto): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(user: User): Promise<void> {
+    try {
+      await this.userRepository.update({ id: user.id }, user);
+    } catch {
+      throw new Error;
+    }
   }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(id: string): Promise<void> {
+    try {
+      await this.userRepository.delete({ id: id });
+    } catch {
+      throw new Error;
+    }
   }
 
   private toUserDto(user: User) {
